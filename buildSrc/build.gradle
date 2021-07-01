@@ -1,0 +1,14 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.5.20"
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly gradleApi()
+    implementation 'com.android.tools.build:gradle:4.2.1'
+    implementation 'org.ow2.asm:asm:7.3.1'
+}
