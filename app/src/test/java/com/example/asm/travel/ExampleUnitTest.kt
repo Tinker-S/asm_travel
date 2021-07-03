@@ -22,7 +22,7 @@ class ExampleUnitTest {
         mv.visitEnd()
         cw.visitEnd()
 
-        ReflectUtil.callMethod(
+        ReflectUtil.callStaticMethod(
             ReflectUtil.findMethod(
                 ReflectUtil.loadClass("Hello", cw.toByteArray()),
                 "main",
@@ -32,9 +32,4 @@ class ExampleUnitTest {
         )
     }
 
-    @Test
-    fun genSubclassByAsm() {
-        val cw = ClassWriter(0)
-        cw.visit(V1_8, ACC_PUBLIC, "Hello", null, "java/lang/Object", null)
-    }
 }

@@ -19,6 +19,18 @@ object ReflectUtil {
     }
 
     fun callMethod(
+        target: Any?,
+        method: Method,
+        vararg args: Any
+    ) {
+        try {
+            method.invoke(target, *args)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun callStaticMethod(
         method: Method,
         vararg args: Any
     ) {
