@@ -7,6 +7,8 @@ import org.objectweb.asm.Opcodes.*
 
 class TravelClassVisitor(private val cw: ClassWriter) : ClassVisitor(ASM7, cw) {
 
+    private var currentClassName: String? = null
+
     override fun visit(
         version: Int,
         access: Int,
@@ -16,7 +18,8 @@ class TravelClassVisitor(private val cw: ClassWriter) : ClassVisitor(ASM7, cw) {
         interfaces: Array<out String>?
     ) {
         super.visit(version, access, name, signature, superName, interfaces)
-        if ("com/example/asm/travel/target/Caller" == name) {
+        currentClassName = name
+        if (CALLER_CLASS_NAME == name) {
             addLogMethodForCall(cw)
         }
     }
@@ -29,7 +32,7 @@ class TravelClassVisitor(private val cw: ClassWriter) : ClassVisitor(ASM7, cw) {
         exceptions: Array<out String>?
     ): MethodVisitor {
         val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-        if ("launch" == name) {
+        if (CALLER_CLASS_NAME == currentClassName && "launch" == name) {
             return CallerLaunchMethodVisitor(mv)
         }
         return mv
@@ -63,5 +66,9 @@ class TravelClassVisitor(private val cw: ClassWriter) : ClassVisitor(ASM7, cw) {
         methodVisitor.visitMaxs(1, 1)
         methodVisitor.visitEnd()
         classWriter.visitEnd()
+    }
+
+    companion object {
+        private const val CALLER_CLASS_NAME = "com/example/asm/travel/target/Caller"
     }
 }
